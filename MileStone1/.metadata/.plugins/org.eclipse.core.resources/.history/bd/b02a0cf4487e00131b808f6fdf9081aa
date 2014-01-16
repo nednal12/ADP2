@@ -1,0 +1,11 @@
+package com.bmarohnic.lib;
+
+import android.content.Context;
+import android.net.ConnectivityManager;
+
+public class NetworkConnection {
+
+	private static void networkConnection(Context context){
+		ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	}
+}

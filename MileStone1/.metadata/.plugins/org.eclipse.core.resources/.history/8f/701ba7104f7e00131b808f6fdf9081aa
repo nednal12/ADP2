@@ -1,0 +1,14 @@
+package com.bmarohnic.lib;
+
+import java.net.URL;
+
+public class APIInterface {
+	
+	public static String getURLStringResponString(URL url){
+		
+		String urlString = "";
+		
+		return urlString;
+	}
+
+}

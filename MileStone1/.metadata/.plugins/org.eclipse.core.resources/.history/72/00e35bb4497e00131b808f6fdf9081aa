@@ -1,0 +1,25 @@
+package com.bmarohnic.lib;
+
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
+public class NetworkConnection {
+
+	static Boolean _connection = false;
+	static String _connectionType = "No Connection";
+	
+	
+	private static void networkConnection(Context context){
+		ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+		
+		if(networkInfo != null){
+			if(networkInfo.isConnected()){
+				_connectionType = networkInfo.getTypeName();
+				_connection = true;
+				
+			}
+		}
+	}
+}

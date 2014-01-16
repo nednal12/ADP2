@@ -1,0 +1,43 @@
+package com.bmarohnic.buysafe;
+
+import com.bmarohnic.lib.NetworkConnection;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Context;
+import android.util.Log;
+import android.view.Menu;
+
+public class LandingPage extends Activity {
+
+	Context _context = this;
+	Boolean _isDeviceConnected = false;
+	
+	
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.landing_page);
+        
+        // Call getConnectionStatus and getConnectionType located within the NetworkConnection class.
+        // The results will be used to determine whether to retrieve new data from the API 
+        // or load stored data resident on the device if it exists.
+        _isDeviceConnected = NetworkConnection.getConnectionStatus(_context);
+        
+        if(_isDeviceConnected == true){
+        	Log.i("Network Connection", NetworkConnection.getConnectionType(_context));
+        	
+        	
+        	
+        }
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.landing_page, menu);
+        return true;
+    }
+    
+}

@@ -1,0 +1,42 @@
+package com.bmarohnic.lib;
+
+import java.io.BufferedInputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
+import android.util.Log;
+
+public class APIInterface {
+	
+	public static String getURLString(URL url){
+		
+		String apiString = "";
+		
+		URLConnection urlConnection;
+		try {
+			
+			urlConnection = url.openConnection();
+			BufferedInputStream bufferedInputStream = new BufferedInputStream(urlConnection.getInputStream());
+			
+			byte[] apiBytes = new byte[1024];
+			int howManyBytesRead = 0;
+			StringBuffer apiBuffer = new StringBuffer();
+			
+			while((howManyBytesRead = bufferedInputStream.read(apiBytes)) != -1){
+				apiString = new String(apiBytes, 0, howManyBytesRead);
+				apiBuffer.append(apiString);
+				
+			}
+			
+			return apiBuffer.toString();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Log.e("APIInterface", "Within getURLString");
+		}
+		
+		
+		return apiString;
+	}
+
+}
