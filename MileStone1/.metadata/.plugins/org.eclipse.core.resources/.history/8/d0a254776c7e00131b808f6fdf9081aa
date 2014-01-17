@@ -1,0 +1,20 @@
+package com.bmarohnic.lib;
+
+import java.net.URL;
+
+import android.os.AsyncTask;
+
+public class AsynchronousTask extends AsyncTask<URL, Void, String>{
+
+	@Override
+	protected String doInBackground(URL... urls) {
+		
+		String apiData = "";
+		for(URL url: urls){
+			apiData = APIInterface.getAPIData(url);
+		}
+		
+		return apiData;
+	}
+
+}

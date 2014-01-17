@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename compilation unit &apos;com.bmarohnic.lib.AsynchronousTask.java&apos; to &apos;XMLParser.java&apos;&#x0A;- Original project: &apos;BuySafe&apos;&#x0A;- Original element: &apos;com.bmarohnic.lib.AsynchronousTask.java&apos;&#x0A;- Renamed element: &apos;com.bmarohnic.lib.XMLParser.java&apos;" description="Rename compilation unit &apos;AsynchronousTask.java&apos;" flags="2" id="org.eclipse.jdt.ui.rename.compilationunit" input="/src&lt;com.bmarohnic.lib{AsynchronousTask.java" name="XMLParser.java" references="false" stamp="1389921136923" version="1.0"/>
+</session>

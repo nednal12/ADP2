@@ -1,0 +1,20 @@
+package com.bmarohnic.lib;
+
+public class FileManager {
+
+	private static FileManager fileManager_Instance;
+	
+	// Create constructor
+	private FileManager(){
+		
+	}
+	
+	public static FileManager getInstance(){
+		if(fileManager_Instance == null){
+			fileManager_Instance = new FileManager();
+			
+		}
+		
+		return fileManager_Instance;
+	}
+}

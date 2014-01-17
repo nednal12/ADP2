@@ -1,0 +1,44 @@
+package com.bmarohnic.lib;
+
+import java.net.URL;
+
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
+
+public class AsynchronousTask extends AsyncTask<URL, Void, String>{
+
+	String _apiData = "";
+	String filename = "xml_data_from_CPSC.txt";
+	FileManager xmlData;
+	Context _context;
+	
+	
+	public AsynchronousTask(URL completeURL) {
+		doInBackground(completeURL);
+	}
+
+	@Override
+	protected String doInBackground(URL... urls) {
+		
+//		String apiData = "";
+		for(URL url: urls){
+			_apiData = APIInterface.getAPIData(url);
+		}
+		
+		return _apiData;
+	}
+	
+	@Override
+	protected void onPostExecute(String result) {
+		 
+		Log.i("API data from Async", result);
+		
+		xmlData = FileManager.getInstance();
+		xmlData.writeStringToFile(_context, filename, result);
+		
+		Log.i("onPostExecute", "XML Written to file");
+	}
+
+
+}

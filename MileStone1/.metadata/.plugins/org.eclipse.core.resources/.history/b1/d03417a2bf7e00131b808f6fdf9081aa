@@ -1,0 +1,76 @@
+package com.bmarohnic.lib;
+
+import android.content.ContentProvider;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.BaseColumns;
+
+public class APIContentProvider extends ContentProvider{
+
+	public static final String AUTHORITY = "com.bmarohnic.buysafe.apicontentprovider";
+	
+	public static class RecallData implements BaseColumns{
+		
+		public static final Uri RECALL_URI = Uri.parse("content://" + AUTHORITY + "/items");
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.bmarohnic.buysafe.item";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.bmarohnic.BuySafe.item";
+		
+		public static final String RECALLNO_COLUMN = "recallNo";
+		public static final String RECALLURL_COLUMN = "recallURL";
+		public static final String RECDATE_COLUMN = "recDate";
+		public static final String MANUFACTURER_COLUMN = "manufacturer";
+		public static final String TYPE_COLUMN = "type";
+		public static final String PRNAME_COLUMN = "prname";
+		public static final String HAZARD_COLUMN = "hazard";
+		public static final String COUNTRY_MFG_COLUMN = "country_mfg";
+		
+		
+		public static final String[] PROJECTION = {"_Id", RECALLNO_COLUMN, RECALLURL_COLUMN, RECDATE_COLUMN, MANUFACTURER_COLUMN,
+			TYPE_COLUMN, PRNAME_COLUMN, HAZARD_COLUMN, COUNTRY_MFG_COLUMN};
+			
+		private RecallData(){};
+		
+		}
+	}
+	
+	@Override
+	public int delete(Uri uri, String selection, String[] selectionArgs) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getType(Uri uri) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Uri insert(Uri uri, ContentValues values) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean onCreate() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Cursor query(Uri uri, String[] projection, String selection,
+			String[] selectionArgs, String sortOrder) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int update(Uri uri, ContentValues values, String selection,
+			String[] selectionArgs) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

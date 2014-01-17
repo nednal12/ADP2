@@ -34,7 +34,7 @@ public class APIInterface {
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			Log.e("APIInterface", "Within getURLString");
+			Log.e("APIInterface", e.toString());
 		}
 		
 		

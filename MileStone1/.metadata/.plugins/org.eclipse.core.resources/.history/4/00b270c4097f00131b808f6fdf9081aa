@@ -1,0 +1,54 @@
+package com.bmarohnic.lib;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import android.content.Context;
+import android.util.Log;
+
+public class FileManager {
+
+	private static FileManager fileManager_Instance;
+	
+	// Create constructor
+	private FileManager(){
+		
+	}
+	
+	public static FileManager getInstance(){
+		if(fileManager_Instance == null){
+			fileManager_Instance = new FileManager();
+			
+		}
+		
+		return fileManager_Instance;
+	}
+	
+	public boolean writeStringToFile (Context context, String filename, String content){
+	
+		Boolean result = false;
+		
+		
+		FileOutputStream fileOutputStream = null;
+		
+		try {
+			fileOutputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+			try {
+				fileOutputStream.write(content.getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				Log.e("writeStringToFile write", e.toString());
+			}
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Log.e("writeStringToFile open", e.toString());
+		}
+		
+		
+		return result;
+	}
+}
