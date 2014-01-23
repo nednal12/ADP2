@@ -21,11 +21,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
+   
 import com.bmarohnic.lib.APIInterface;
 import com.bmarohnic.lib.NetworkConnection;
+import com.bmarohnic.lib.RecallAdapter;
 import com.bmarohnic.lib.XMLParser;
 import com.bmarohnic.lib.XMLParser.XMLTagData;
 import com.bmarohnic.buysafe.DetailActivity;
@@ -36,6 +36,7 @@ public class LandingPage extends ListActivity {
 	Context _context = this;
 	Boolean _isDeviceConnected = false;
 	List<XMLTagData> entries;
+	private static final int REQUEST_CODE = 100;
 	
 	
     @Override
@@ -103,6 +104,7 @@ public class LandingPage extends ListActivity {
     }
     
     
+    // AsyncTask will accept the generated API URL and pass it to APIInterface.getAPIData.
     private class AsynchronousTask extends AsyncTask<URL, Void, String>{
 
     	@Override
@@ -142,7 +144,12 @@ public class LandingPage extends ListActivity {
 						Log.i("MainActivity", entry.country_mfg);
 						
 					}
-			ArrayAdapter<XMLTagData> adapter = new ArrayAdapter<XMLParser.XMLTagData>(LandingPage.this, android.R.layout.simple_list_item_1, entries);
+//			ArrayAdapter<XMLTagData> adapter = new ArrayAdapter<XMLParser.XMLTagData>(LandingPage.this, 
+//					android.R.layout.simple_list_item_1, entries);
+			
+			RecallAdapter adapter = new RecallAdapter(LandingPage.this, R.layout.item_recall, entries);
+			
+			
 			setListAdapter(adapter);	
 			
 						
@@ -177,7 +184,7 @@ public class LandingPage extends ListActivity {
     	intent.putExtra("hazard", entry.hazard);
     	intent.putExtra("country_mfg", entry.country_mfg);
     	
-    	
+		startActivity(intent);
     	
     }
 }

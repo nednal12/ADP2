@@ -4,5 +4,7 @@
     <string name="app_name">BuySafe</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="landingpage_title">Recent Recalls</string>
+    <string name="detailsactivity_title">Recall Details</string>
 
 </resources>
