@@ -20,10 +20,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
    
 import com.bmarohnic.lib.APIInterface;
+import com.bmarohnic.lib.FileManager;
 import com.bmarohnic.lib.NetworkConnection;
 import com.bmarohnic.lib.RecallAdapter;
 import com.bmarohnic.lib.XMLParser;
@@ -36,7 +39,6 @@ public class LandingPage extends ListActivity {
 	Context _context = this;
 	Boolean _isDeviceConnected = false;
 	List<XMLTagData> entries;
-	private static final int REQUEST_CODE = 100;
 	
 	
     @Override
@@ -54,8 +56,57 @@ public class LandingPage extends ListActivity {
         	
         	getData();
         	
+        } else {
+        	String xmlString = FileManager.readStringFromFile(_context, "cpsc.txt");
+        	
+        	if (xmlString.equals("No cached data to display") || xmlString.equals("Read error encountered")) {
+        		Toast.makeText(this, xmlString, Toast.LENGTH_LONG).show();
+        	} else{
+        		try {
+        			// Convert the string returned by APIInterface.getAPIData into an InputStream.
+        			// The required data type to the XMLPullParser is InputStream.
+    				InputStream inputStream = new ByteArrayInputStream(xmlString.getBytes("UTF-8"));
+    				XMLParser xmlParser = new XMLParser();
+    				try {
+    					entries = xmlParser.parse(inputStream);
+    					
+    					for (XMLTagData entry : entries) {
+    						Log.i("MainActivity", entry.recallNo);
+    						Log.i("MainActivity", entry.recallURL);
+    						Log.i("MainActivity", entry.recDate);
+    						Log.i("MainActivity", entry.manufacturer);
+    						Log.i("MainActivity", entry.type);
+    						Log.i("MainActivity", entry.prname);
+    						Log.i("MainActivity", entry.hazard);
+    						Log.i("MainActivity", entry.country_mfg);
+    						
+    					}
+//    			ArrayAdapter<XMLTagData> adapter = new ArrayAdapter<XMLParser.XMLTagData>(LandingPage.this, 
+//    					android.R.layout.simple_list_item_1, entries);
+    			
+    			RecallAdapter adapter = new RecallAdapter(LandingPage.this, R.layout.item_recall, entries);
+    			
+    			
+    			setListAdapter(adapter);	
+    			
+    			Toast.makeText(this, "Cached Data Loaded", Toast.LENGTH_LONG).show();
+    						
+    				} catch (XmlPullParserException e) {
+    					// TODO Auto-generated catch block
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					// TODO Auto-generated catch block
+    					e.printStackTrace();
+    				}
+    				
+    			} catch (UnsupportedEncodingException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+        	}
+        	}
         }
-    }
+
 
 
     @Override
@@ -115,6 +166,7 @@ public class LandingPage extends ListActivity {
     			apiDataString = APIInterface.getAPIData(url);
     		}
     		
+    		FileManager.writeStringToFile(_context, "cpsc.txt", apiDataString);
     		
     		return apiDataString;
     	}
@@ -180,11 +232,26 @@ public class LandingPage extends ListActivity {
     	intent.putExtra("recDate", entry.recDate);
     	intent.putExtra("manufacturer", entry.manufacturer);
     	intent.putExtra("type", entry.type);
-    	intent.putExtra("type", entry.prname);
+    	intent.putExtra("prname", entry.prname);
     	intent.putExtra("hazard", entry.hazard);
     	intent.putExtra("country_mfg", entry.country_mfg);
     	
 		startActivity(intent);
     	
+    }
+     
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	Intent intent = null;
+    	switch (item.getItemId()) {
+		case R.id.launchSearchActivity:
+			intent = new Intent(LandingPage.this, SearchActivity.class);
+			startActivity(intent);
+			break;
+
+		default:
+			break;
+		}
+    	return super.onOptionsItemSelected(item);
     }
 }

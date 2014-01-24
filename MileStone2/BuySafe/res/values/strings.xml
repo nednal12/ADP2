@@ -14,5 +14,6 @@
     <string name="tvRecallURL">Click to find out more at CPSC.gov</string>
     <string name="btRecallURL">CPSC.gov</string>
     <string name="set_in_code">Set In Code</string>
+    <string name="search_instructions">Enter a keyword or a Date Range</string>
 
 </resources>

@@ -26,7 +26,7 @@ public class RecallAdapter extends ArrayAdapter<XMLTagData> {
 		this.context = context;
 		this.objects = objects;
 	}
-	
+	 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		XMLTagData entry = objects.get(position);

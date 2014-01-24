@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/search_instructions" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        
+        <EditText 
+            android:id="@+id/etKeywordSearch"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="10dp"
+	        android:hint="enter a keyword or phrase"
+	        android:text=""/>
+        
+        <Button 
+            android:id="@+id/btKeywordSearch"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="10dp"
+	        android:layout_marginLeft="30dp"
+	        android:paddingLeft="20dp"
+	        android:paddingRight="20dp"
+	        android:layout_toRightOf="@id/etKeywordSearch"
+	        android:text="Search"/>
+        
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date Range" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        
+        <EditText 
+            android:id="@+id/etFromSearch"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="10dp"
+	        android:hint="ccyy-mm-dd"
+	        android:text="@string/set_in_code"/>
+        
+        <Button 
+            android:id="@+id/btKeywordSearch"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="10dp"
+	        android:paddingLeft="20dp"
+	        android:paddingRight="20dp"
+	        android:layout_toRightOf="@id/etFromSearch"
+	        android:text="Search"/>
+        
+    </RelativeLayout>
+
+    <EditText 
+            android:id="@+id/etToSearch"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="10dp"
+	        android:hint="ccyy-mm-dd"
+	        android:text=""/>
+
+    <DatePicker
+        android:id="@+id/datePicker1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:startYear="1971"
+        android:spinnersShown="true"
+        android:calendarViewShown="false" />
+</LinearLayout>

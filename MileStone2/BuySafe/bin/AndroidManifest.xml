@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -33,6 +35,23 @@
                 
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name="com.bmarohnic.buysafe.ExtendedActivity"
+            android:label="@string/detailpage_title" >
+            <intent-filter>
+                
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="com.bmarohnic.buysafe.SearchActivity"
+            android:label="@string/detailpage_title" >
+            <intent-filter>
+                
+            </intent-filter>
+        </activity>
+        
         <provider android:authorities="com.bmarohnic.lib.apicontentprovider" android:name="com.bmarohnic.lib.APIContentProvider" android:exported="false"></provider>
     </application>
 

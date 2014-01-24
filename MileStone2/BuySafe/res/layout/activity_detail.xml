@@ -13,6 +13,7 @@
         android:layout_height="0dp"
         android:padding="5dp"
         android:background="@android:color/white"
+        android:textSize="20sp"
         android:layout_weight="2"
         android:text="@string/set_in_code" />
     
@@ -28,41 +29,44 @@
 	        android:id="@+id/tvManufacturer"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:paddingLeft="5dp"
+	        android:textStyle="bold"
 	        android:text="@string/tvManufacturer" />
 	
 	    <Button
 	        android:id="@+id/btManufacturer"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:paddingLeft="10dp"
-	        android:paddingRight="10dp"
+	        android:paddingBottom="30dp"
+	        android:layout_marginBottom="10dp"
 	        android:text="@string/set_in_code" />
 	
 	    <TextView
 	        android:id="@+id/tvType"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:paddingLeft="5dp"
+	        android:textStyle="bold"
 	        android:text="@string/tvType" />
 	
 	    <Button
 	        android:id="@+id/btType"
-	        android:layout_width="wrap_content"
+	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
+	        android:paddingBottom="30dp"
+	        android:layout_marginBottom="10dp"
 	        android:text="@string/set_in_code" />
 	
 	    <TextView
 	        android:id="@+id/tvRecallURL"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:paddingLeft="5dp"
+	        android:textStyle="bold"
 	        android:text="@string/tvRecallURL" />
 	
 	    <Button
 	        android:id="@+id/btRecallURL"
-	        android:layout_width="wrap_content"
+	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
+	        android:paddingBottom="30dp"
 	        android:text="@string/btRecallURL" />
     
 	</LinearLayout>
