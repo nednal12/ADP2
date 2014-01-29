@@ -1,0 +1,148 @@
+package com.bmarohnic.lib;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
+import android.util.Log;
+import android.util.Xml;
+
+public class XMLParser {
+	// Namespace is a required input but never used.
+	// Declare and instantiate here in order to avoid problems later.
+	private static final String namespace = null;
+	
+	// Create a structure to hold the data being parsed from the raw XML data pulled from the API.
+	public static class XMLTagData {
+		public final String recallNo;
+		public final String recallURL;
+		public final String recDate;
+		public final String manufacturer;
+		public final String type;
+		public final String prname;
+		public final String hazard;
+		public final String country_mfg;
+		
+		// Create a constructor for the newly created structure to set the variable values.
+		private XMLTagData(String recallNo, String recallURL, String recDate, String manufacturer, String type, 
+				String prname, String hazard, String country_mfg){
+			this.recallNo = recallNo;
+			this.recallURL = recallURL;
+			this.recDate = recDate;
+			this.manufacturer = manufacturer;
+			this.type = type;
+			this.prname = prname;
+			this.hazard = hazard;
+			this.country_mfg = country_mfg;
+		}
+		
+		public String toString() {
+			return manufacturer;
+		}
+	}
+	
+	
+	public List<XMLTagData> parse(InputStream inputstream) throws XmlPullParserException, IOException {
+		
+		
+		XmlPullParser xmlPullParser = Xml.newPullParser();
+		xmlPullParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+		xmlPullParser.setInput(inputstream, null);
+		
+		xmlPullParser.nextTag();
+		Log.i("XMLParser", "parse()");
+		return readXMLFeed(xmlPullParser);
+		
+		
+	}
+
+	private List<XMLTagData> readXMLFeed(XmlPullParser xmlPullParser) throws XmlPullParserException, IOException{
+		List<XMLTagData> entries = new ArrayList<XMLTagData>();
+		String recallNo = null;
+		String recallURL = null;
+		String recDate = null;
+		String manufacturer = null;
+		String type = null;
+		String prname = null;
+		String hazard = null;
+		String country_mfg = null;
+		
+		
+		Log.i("XMLParser", "readXMLFeed1");
+		
+		xmlPullParser.require(XmlPullParser.START_TAG, namespace, "message");
+		
+		Log.i("XMLParser", "readXMLFeed2");
+		
+		while (xmlPullParser.next() != XmlPullParser.END_TAG) {
+			
+			if(xmlPullParser.getEventType() != XmlPullParser.START_TAG) {
+				continue;
+			}
+			
+			String tagName = xmlPullParser.getName();
+			if(tagName.equals("results")) {
+				
+				xmlPullParser.require(XmlPullParser.START_TAG, namespace, "results");
+				
+				while (xmlPullParser.next() != XmlPullParser.END_TAG) {
+					
+					if(xmlPullParser.getEventType() != XmlPullParser.START_TAG) {
+						continue;
+					}
+				
+					Log.i("XMLParser", "readXMLFeed3");
+				
+					recallNo = xmlPullParser.getAttributeValue(namespace, "recallNo");
+					recallURL = xmlPullParser.getAttributeValue(namespace, "recallURL");
+					recDate = xmlPullParser.getAttributeValue(namespace, "recDate");
+					manufacturer = xmlPullParser.getAttributeValue(namespace, "manufacturer");
+					type = xmlPullParser.getAttributeValue(namespace, "type");
+					prname = xmlPullParser.getAttributeValue(namespace, "prname");
+					hazard = xmlPullParser.getAttributeValue(namespace, "hazard");
+					country_mfg = xmlPullParser.getAttributeValue(namespace, "country_mfg");
+					entries.add(new XMLTagData(recallNo, recallURL, recDate, manufacturer, type, prname, hazard, country_mfg));
+					
+					
+					Log.i("recallNo", recallNo);
+					Log.i("recallURL", recallURL);
+					xmlPullParser.nextTag();
+					
+				}
+				
+			} else {
+				skipThisTag(xmlPullParser);
+				Log.i("XMLParser", "readXMLFeed4");
+			}
+			
+		}
+		
+		return entries;
+	}
+
+		
+	private void skipThisTag(XmlPullParser xmlPullParser) throws XmlPullParserException, IOException {
+		if (xmlPullParser.getEventType() != XmlPullParser.START_TAG) {
+			throw new IllegalStateException();
+		}
+		
+		int level = 1;
+		while (level != 0) {
+			switch (xmlPullParser.next()) {
+			case XmlPullParser.END_TAG:
+				level--;
+				break;
+
+			case XmlPullParser.START_TAG:
+				level++;
+				break;
+			}
+		}
+		
+	}
+
+}
