@@ -1,0 +1,7 @@
+package com.bmarohnic.buysafe;
+
+import android.app.ListFragment;
+
+public class WatchListFragment extends ListFragment {
+
+}

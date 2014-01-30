@@ -1,0 +1,5 @@
+ColorsAndFontsPreferencePage.expandedCategories=Torg.eclipse.jdt.ui.presentation\tTorg.eclipse.wst.sse.ui
+ColorsAndFontsPreferencePage.selectedElement=Forg.eclipse.jdt.ui.editors.textfont
+eclipse.preferences.version=1
+org.eclipse.jdt.ui.editors.textfont=1|Monaco|14.0|0|COCOA|1|Monaco;
+org.eclipse.wst.sse.ui.textfont=1|Monaco|14.0|0|COCOA|1|Monaco;

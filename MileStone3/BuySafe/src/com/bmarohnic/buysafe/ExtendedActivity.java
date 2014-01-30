@@ -146,10 +146,15 @@ private void getData(){
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
     	super.onListItemClick(l, v, position, id);
+    	Intent receivedIntent = getIntent();
+    	String callingActivity = receivedIntent.getStringExtra("callingActivity");
     	
+    	if (callingActivity.equals("DetailActivity")) {
+			
+		
     	XMLTagData entry = entries.get(position);
     	
-//    	Intent intent = new Intent(this, DetailActivity.class);
+//    	
     	Intent intent = new Intent();
     	
     	intent.putExtra("recallNo", entry.recallNo);
@@ -161,11 +166,27 @@ private void getData(){
     	intent.putExtra("hazard", entry.hazard);
     	intent.putExtra("country_mfg", entry.country_mfg);
     	
-//		startActivity(intent);
+//		
     	
     	setResult(RESULT_OK, intent);
     	finish();
-    	
+    	} else {
+    		
+    		XMLTagData entry = entries.get(position);
+    		Intent intent = new Intent(this, DetailActivity.class);
+    		
+    		intent.putExtra("recallNo", entry.recallNo);
+        	intent.putExtra("recallURL", entry.recallURL);
+        	intent.putExtra("recDate", entry.recDate);
+        	intent.putExtra("manufacturer", entry.manufacturer);
+        	intent.putExtra("type", entry.type);
+        	intent.putExtra("prname", entry.prname);
+        	intent.putExtra("hazard", entry.hazard);
+        	intent.putExtra("country_mfg", entry.country_mfg);
+        	
+        	startActivity(intent);
+//        	finish();
+    	}
     }
 
 	

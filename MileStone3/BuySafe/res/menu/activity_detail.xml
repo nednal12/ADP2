@@ -5,7 +5,7 @@
         android:id="@+id/addToWatchlist"
         android:orderInCategory="10"
         android:icon="@drawable/ic_action_new"
-        android:showAsAction="ifRoom|withText"
+        android:showAsAction="always"
         android:title="@string/action_watchlist"/>
     
     <item

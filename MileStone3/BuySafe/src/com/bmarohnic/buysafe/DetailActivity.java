@@ -1,16 +1,21 @@
 package com.bmarohnic.buysafe;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bmarohnic.lib.XMLParser.XMLTagData;
 
@@ -26,11 +31,14 @@ public class DetailActivity extends Activity {
 	Button btRecallURL;
 	Button btType;
 	TextView tvPrname;
-	
+	private SharedPreferences spWatchList;
+	Intent intent;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		spWatchList = getPreferences(MODE_PRIVATE);
 		
 		setContentView(R.layout.activity_detail);
 		
@@ -39,7 +47,7 @@ public class DetailActivity extends Activity {
 		btRecallURL = (Button) findViewById(R.id.btRecallURL);
 		btType = (Button) findViewById(R.id.btType);
 		
-		Intent intent = getIntent();
+		intent = getIntent();
 		
 		manufacturer = intent.getStringExtra("manufacturer");
 		type = intent.getStringExtra("type");
@@ -63,6 +71,7 @@ public class DetailActivity extends Activity {
 				Intent intent = new Intent(DetailActivity.this, ExtendedActivity.class);
 		    	
 		    	intent.putExtra("apiURL", pieceMealURL);
+		    	intent.putExtra("callingActivity", "DetailActivity");
 		    	
 		    	startActivityForResult(intent, REQUEST_CODE);
 				
@@ -85,6 +94,7 @@ public class DetailActivity extends Activity {
 		    	Intent intent = new Intent(DetailActivity.this, ExtendedActivity.class);
 		    	
 		    	intent.putExtra("apiURL", pieceMealURL);
+		    	intent.putExtra("callingActivity", "DetailActivity");
 		    	
 		    	startActivityForResult(intent, REQUEST_CODE);
 				
@@ -112,6 +122,36 @@ public class DetailActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_detail, menu);
+        MenuItem addToWatchList = menu.findItem(R.id.addToWatchlist);
+        
+        addToWatchList.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				
+				SharedPreferences.Editor spEditor = spWatchList.edit();
+				
+				String spRecallNo = intent.getStringExtra("recallNo");
+				String spPrname = intent.getStringExtra("prname");
+				String spRecDate = intent.getStringExtra("recDate");
+				String spType = intent.getStringExtra("type");
+				String spRecallURL = intent.getStringExtra("recallURL");
+				String spHazard = intent.getStringExtra("hazard");
+				String spManufaturer = intent.getStringExtra("manufacturer");
+				String spCountry_mfg = intent.getStringExtra("country_mfg");
+				
+				Set<String> stringSet = new HashSet<String>();
+				String[] recallDetailsArray = {spRecallNo,spPrname,spRecDate,spType,spRecallURL,spHazard,spManufaturer,spCountry_mfg};
+				
+				for (String string : recallDetailsArray) {
+					stringSet.add(string);
+				}
+				spEditor.putStringSet(spRecallNo, stringSet);
+				spEditor.commit();
+				Toast.makeText(DetailActivity.this, "Recall added to watchlist", Toast.LENGTH_SHORT).show();
+				return false;
+			}
+		});
         return true;
 	}
 	

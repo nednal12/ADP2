@@ -52,7 +52,7 @@
             </intent-filter>
         </activity>
         
-        <provider android:authorities="com.bmarohnic.lib.apicontentprovider" android:name="com.bmarohnic.lib.APIContentProvider" android:exported="false"></provider>
+        
     </application>
 
 </manifest>
