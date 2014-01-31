@@ -52,6 +52,13 @@
             </intent-filter>
         </activity>
         
+        <activity
+            android:name="com.bmarohnic.buysafe.WatchListActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                
+            </intent-filter>
+        </activity>
         
     </application>
 

@@ -1,0 +1,58 @@
+package com.bmarohnic.lib;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+public class RecallsDBHelper extends SQLiteOpenHelper {
+
+	private static final String LOGTAG = "RecallsDBHelper";
+	private static final String DB_NAME = "recalls.db";
+	private static final int DB_VERSION = 1;
+	
+	public static final String RECALLS = "recalls";
+	public static final String COLUMN_ID = "key";
+	public static final String RECALLNO = "recallNo";
+	public static final String RECDATE = "recDate";
+	public static final String TYPE = "type";
+	public static final String MANUFACTURER = "manufacturer";
+	public static final String HAZARD = "hazard";
+	public static final String RECALLURL = "recallURL";
+	public static final String PRNAME = "prname";
+	public static final String COUNTRY_MFG = "country_mfg";
+	
+	private static final String CREATE_TABLE = 
+			"CREATE TABLE " + RECALLS + " (" +
+			COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+			RECALLNO + " TEXT, " +
+			RECDATE + " TEXT, " +
+			TYPE + " TEXT, " +
+			MANUFACTURER + " TEXT, " +
+			HAZARD + " TEXT, " +
+			RECALLURL + " TEXT, " +
+			PRNAME + " TEXT, " +
+			COUNTRY_MFG + " TEXT, " +
+			")";
+	
+	
+	public RecallsDBHelper(Context context) {
+		super(context, DB_NAME, null, DB_VERSION);
+
+	}
+
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		db.execSQL(CREATE_TABLE);
+		Log.i(LOGTAG, "Table has been created");
+
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldDBVer, int newDBVer) {
+		db.execSQL("DROP TABLE IF EXISTS " + DB_NAME);
+		onCreate(db);
+	}
+
+}

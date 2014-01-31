@@ -1,0 +1,43 @@
+package com.bmarohnic.buysafe;
+
+import java.util.Map;
+import java.util.Map.Entry;
+
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
+
+public class WatchListActivity extends Activity {
+	SharedPreferences spWatchList;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		setContentView(R.layout.activity_watchlist);
+		
+		FragmentManager fragmentManager = getFragmentManager();
+		Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentFrame);
+		
+		if(fragment == null) {
+			fragment = new WatchListFragment();
+			fragmentManager.beginTransaction().add(R.id.fragmentFrame, fragment).commit();
+		}
+		
+		
+		String[] recallDataArray = {null};
+		spWatchList = this.getSharedPreferences("recallData", MODE_PRIVATE);
+		String myCrappyString = spWatchList.getAll();
+		for (Entry<String, ?> entry : stringMap.entrySet()) {
+			recallDataArray = (String[]) entry.getValue();
+			for (int i = 0; i < recallDataArray.length; i++) {
+				Log.i(entry.getKey(), recallDataArray[i]);
+			}
+			
+		}
+	}
+	
+}

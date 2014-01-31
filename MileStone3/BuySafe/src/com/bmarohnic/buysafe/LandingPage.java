@@ -52,13 +52,22 @@ public class LandingPage extends ListActivity {
         if(_isDeviceConnected == true){
         	Log.i("Network Connection", NetworkConnection.getConnectionType(_context));
         	
+        	// Connection was found. Begin the process of retrieving data from CPSC.gov.
         	getData();
         	
+        // Oh no, no cell or wifi detected. Go get cached data if it exists.
+        // If no cached data exists, inform the user so that they don't get upset and uninstall the app.
         } else {
         	String xmlString = FileManager.readStringFromFile(_context, "cpsc.txt");
         	
+        	// Use the values generated within the catch statements of the FileManager class to 
+        	// inform the user why there is no information to display.
         	if (xmlString.equals("No cached data to display") || xmlString.equals("Read error encountered")) {
         		Toast.makeText(this, xmlString, Toast.LENGTH_LONG).show();
+        	
+        	// If cached data was found it is still stored within the same XML style as it was originally 
+        	// delivered thru the API. Therefore, run it thru the same process in order to get it to 
+        	// display in the ListView.
         	} else{
         		try {
         			// Convert the string returned by APIInterface.getAPIData into an InputStream.
@@ -79,14 +88,12 @@ public class LandingPage extends ListActivity {
     						Log.i("MainActivity", entry.country_mfg);
     						
     					}
-//    			ArrayAdapter<XMLTagData> adapter = new ArrayAdapter<XMLParser.XMLTagData>(LandingPage.this, 
-//    					android.R.layout.simple_list_item_1, entries);
-    			
+
+    			// Use a custom view to display the data in the ListView.
     			RecallAdapter adapter = new RecallAdapter(LandingPage.this, R.layout.item_recall, entries);
-    			
-    			
     			setListAdapter(adapter);	
     			
+    			// Let the user know that this may not be the most current data.
     			Toast.makeText(this, "Cached Data Loaded", Toast.LENGTH_LONG).show();
     						
     				} catch (XmlPullParserException e) {
@@ -130,17 +137,13 @@ public class LandingPage extends ListActivity {
     	String endDateString = simpleDateFormat.format(endDateDate);
     	String startDateString = simpleDateFormat.format(startDateDate);
     	
-    	Log.i("getData", "startDateString is " + startDateString);
-    	Log.i("getData", "endDateString is " + endDateString);
-    	
+    	// Piece together the API string.
     	String pieceMealURL = "http://www.cpsc.gov/cgibin/CPSCUpcWS/CPSCUpcSvc.asmx/getRecallByDate?startDate=" + startDateString + 
     			"&endDate=" + endDateString + "&userId=myuserid&password=mypassword";
     	
-    	Log.i("Complete URL", pieceMealURL);
-    	
     	try {
     		URL completeURL = new URL(pieceMealURL);
-    		
+    		// Now that the API URL is available, pass it along to the AsyncTask().
     		AsynchronousTask asyncTask = new AsynchronousTask();
     		
     		asyncTask.execute(completeURL);
@@ -163,7 +166,9 @@ public class LandingPage extends ListActivity {
     		for(URL url: urls){
     			apiDataString = APIInterface.getAPIData(url);
     		}
-    		
+    		// Since we now have data to display, go ahead and save a copy of it
+    		// in order to have something to view some time in the future if it
+    		// is determined that the device is not connected to the network.
     		FileManager.writeStringToFile(_context, "cpsc.txt", apiDataString);
     		
     		return apiDataString;
@@ -172,8 +177,6 @@ public class LandingPage extends ListActivity {
     	
     	@Override
     	protected void onPostExecute(String result) {
-    		 
-    		Log.i("String API data from Async", result);
     		
     		try {
     			// Convert the string returned by APIInterface.getAPIData into an InputStream.
@@ -194,30 +197,26 @@ public class LandingPage extends ListActivity {
 						Log.i("MainActivity", entry.country_mfg);
 						
 					}
-//			ArrayAdapter<XMLTagData> adapter = new ArrayAdapter<XMLParser.XMLTagData>(LandingPage.this, 
-//					android.R.layout.simple_list_item_1, entries);
-			
+
+			// Use a custom adapter to display the information in the ListView.
 			RecallAdapter adapter = new RecallAdapter(LandingPage.this, R.layout.item_recall, entries);
-			
-			
 			setListAdapter(adapter);	
 			
-						
 				} catch (XmlPullParserException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     	}
     }
     
+    
+    // Once the user selects a recall from the list, place the data into an intent
+    // in order to pass it along to the next activity.
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
     	super.onListItemClick(l, v, position, id);
@@ -237,7 +236,8 @@ public class LandingPage extends ListActivity {
 		startActivity(intent);
     	
     }
-     
+    
+    // Navigate to other activities depending on the item selected.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	Intent intent = null;
@@ -246,7 +246,12 @@ public class LandingPage extends ListActivity {
 			intent = new Intent(LandingPage.this, SearchActivity.class);
 			startActivity(intent);
 			break;
-
+		
+		case R.id.launchWatchListActivity:
+			intent = new Intent(LandingPage.this, WatchListActivity.class);
+			startActivity(intent);
+			break;
+			
 		default:
 			break;
 		}

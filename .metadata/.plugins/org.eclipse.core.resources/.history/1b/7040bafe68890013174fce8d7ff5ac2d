@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BuySafe</string>
+    <string name="action_subit_recall">Submit Recall</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="landingpage_title">Recent Recalls</string>
+    <string name="action_search_recalls">Search Recalls</string>
+    <string name="action_watchlist">Add to Watchlist</string>
+    <string name="detailpage_title">Recall Details</string>
+    <string name="action_recent_recalls">Recent Recalls</string>
+    <string name="tvManufacturer">Manufacturer:</string>
+    <string name="tvType">Product Type:</string>
+    <string name="tvRecallURL">Click to find out more at CPSC.gov</string>
+    <string name="btRecallURL">CPSC.gov</string>
+    <string name="set_in_code">Set In Code</string>
+    <string name="search_instructions">Enter a keyword or a Date Range</string>
+    <string name="from_date_date_picker_title">Select a From: Date</string>
+    <string name="to_date_date_picker_title">Select a To: Date</string>
+    <string name="button_text_ok">OK</string>
+
+</resources>

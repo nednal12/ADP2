@@ -1,0 +1,149 @@
+package com.bmarohnic.buysafe;
+
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+public class SearchActivity extends Activity {
+	
+	EditText etKeywordSearch = null;
+	
+	Button btKeywordSearch;
+	Button btDateSearch;
+	
+	String pieceMealURL = null;
+	
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_search);
+		
+		etKeywordSearch = (EditText) findViewById(R.id.etKeywordSearch);
+		
+		btKeywordSearch = (Button) findViewById(R.id.btKeywordSearch);
+		
+		btDateSearch = (Button) findViewById(R.id.btDateSearch);
+		
+		btKeywordSearch.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String keyword = etKeywordSearch.getText().toString();
+				if (etKeywordSearch.getText().toString().equals("")) {
+					Toast.makeText(SearchActivity.this, "Please enter a search string", Toast.LENGTH_LONG).show();
+				} else {
+					pieceMealURL = "http://www.cpsc.gov/cgibin/CPSCUpcWS/CPSCUpcSvc.asmx/getRecallByWord?message1=" + keyword + 
+			    			"&userId=myuserid&password=mypassword";
+					
+					Intent intent = new Intent(SearchActivity.this, ExtendedActivity.class);
+			    	
+			    	intent.putExtra("apiURL", pieceMealURL);
+			    	intent.putExtra("callingActivity", "SearchActivity");
+			    	
+			    	startActivity(intent);
+				}
+				
+			}
+		});
+		
+		final EditText etFromDate = (EditText) findViewById(R.id.etFromDate);
+		final EditText etToDate = (EditText) findViewById(R.id.etToDate);
+		
+		etFromDate.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				EditText etFromDate = (EditText) findViewById(R.id.etFromDate);
+				int intIdForFromDate = etFromDate.getId();
+//				DialogFragment newDatePickerFragment = new DatePickerFragment();
+				DialogFragment newDatePickerFragment = DatePickerFragment.newDatePickerFragment(intIdForFromDate);
+				newDatePickerFragment.show(getFragmentManager(), "etFromDate");
+			}
+		});
+		
+		etToDate.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				EditText etToDate = (EditText) findViewById(R.id.etToDate);
+				int intIdForToDate = etToDate.getId();
+//				DialogFragment newDatePickerFragment = new DatePickerFragment();
+				DialogFragment newDatePickerFragment = DatePickerFragment.newDatePickerFragment(intIdForToDate);
+				newDatePickerFragment.show(getFragmentManager(), "etToDate");
+			}
+		});
+		
+		btDateSearch.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				EditText etFromDate = (EditText) findViewById(R.id.etFromDate);
+				EditText etToDate = (EditText) findViewById(R.id.etToDate);
+				String startDateString = etFromDate.getText().toString();
+				String endDateString = etToDate.getText().toString();
+				// Verify that the user has entered dates in both EditText views before proceeding.
+				if (etFromDate.getText().toString().equals("") || etToDate.getText().toString().equals("")) {
+					Toast.makeText(SearchActivity.this, "Please enter two valid dates!", Toast.LENGTH_LONG).show();
+				} else {
+					
+					// Setup necessary variables that will be used to convert the strings within the EditText views
+					// into dates in order to perform a compare.
+					// The compare will ensure that the TO DATE is greater than or equal to the FROM DATE.
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
+					Date etFromDateDate = new Date();
+					Date etToDateDate = new Date();
+
+					try {
+						etFromDateDate = (Date) dateFormat.parse(etFromDate.getText().toString());
+					} catch (ParseException e) {
+						Log.e("btDateSearch", "etFromDate not coverted");
+					}
+
+					try {
+						etToDateDate = (Date) dateFormat.parse(etToDate.getText().toString());
+					} catch (ParseException e) {
+						Log.e("btDateSearch", "etToDate not coverted");
+					}
+
+					if (etFromDateDate.after(etToDateDate)) {
+						Toast.makeText(SearchActivity.this, "First date cannot be later than the second date", Toast.LENGTH_LONG).show();
+					} else {
+						pieceMealURL = "http://www.cpsc.gov/cgibin/CPSCUpcWS/CPSCUpcSvc.asmx/getRecallByDate?startDate=" + startDateString + 
+				    			"&endDate=" + endDateString + "&userId=myuserid&password=mypassword";
+						
+						Intent intent = new Intent(SearchActivity.this, ExtendedActivity.class);
+				    	
+				    	intent.putExtra("apiURL", pieceMealURL);
+				    	intent.putExtra("callingActivity", "SearchActivity");
+				    	
+				    	startActivity(intent);
+					}
+				}
+			}
+		});
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+}

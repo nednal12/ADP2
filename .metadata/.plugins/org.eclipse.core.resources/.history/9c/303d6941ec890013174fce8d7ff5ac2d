@@ -1,0 +1,22 @@
+package com.bmarohnic.buysafe;
+
+import android.app.ListFragment;
+import android.os.Bundle;
+
+public class WatchListFragment extends ListFragment {
+
+	//Set<String> stringSet = new HashSet<String>();
+	
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		
+		getActivity().setTitle(R.string.action_gotowatchlist);
+		
+//		ArrayAdapter<WatchListActivity.listString> 
+		
+	}
+
+}

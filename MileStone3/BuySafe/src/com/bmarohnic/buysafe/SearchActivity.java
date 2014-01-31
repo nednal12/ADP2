@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -141,9 +142,30 @@ public class SearchActivity extends Activity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
-		return super.onCreateOptionsMenu(menu);
-	}
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.activity_search, menu);
+        return true;
+    }
 	
+	// Navigate to other activities depending on the item selected.
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	Intent intent = null;
+    	switch (item.getItemId()) {
+		case R.id.launchHomeActivity:
+			intent = new Intent(SearchActivity.this, LandingPage.class);
+			startActivity(intent);
+			break;
+		
+		case R.id.launchWatchListActivity:
+			intent = new Intent(SearchActivity.this, WatchListActivity.class);
+			startActivity(intent);
+			break;
+			
+		default:
+			break;
+		}
+    	return super.onOptionsItemSelected(item);
+    }
 }

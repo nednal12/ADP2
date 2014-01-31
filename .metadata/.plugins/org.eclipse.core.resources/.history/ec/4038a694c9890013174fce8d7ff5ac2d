@@ -1,0 +1,42 @@
+package com.bmarohnic.lib;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class RecallsDBHelper extends SQLiteOpenHelper {
+
+	private static final String DB_NAME = "recalls.db";
+	private static final int DB_VERSION = 1;
+	
+	public static final String RECALLS = "recalls";
+	public static final String RECALLNO = "recallNo";
+	public static final String RECDATE = "recDate";
+	public static final String TYPE = "type";
+	public static final String MANUFACTURER = "manufacturer";
+	public static final String HAZARD = "hazard";
+	public static final String RECALLURL = "recallURL";
+	public static final String PRNAME = "prname";
+	public static final String COUNTRY_MFG = "country_mfg";
+	
+	
+	public RecallsDBHelper(Context context, String name, CursorFactory factory,
+			int version) {
+		super(context, name, factory, version);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void onCreate(SQLiteDatabase arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

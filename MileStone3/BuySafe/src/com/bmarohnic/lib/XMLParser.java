@@ -28,7 +28,7 @@ public class XMLParser {
 		public final String country_mfg;
 		
 		// Create a constructor for the newly created structure to set the variable values.
-		private XMLTagData(String recallNo, String recallURL, String recDate, String manufacturer, String type, 
+		public XMLTagData(String recallNo, String recallURL, String recDate, String manufacturer, String type, 
 				String prname, String hazard, String country_mfg){
 			this.recallNo = recallNo;
 			this.recallURL = recallURL;
@@ -71,12 +71,7 @@ public class XMLParser {
 		String hazard = null;
 		String country_mfg = null;
 		
-		
-		Log.i("XMLParser", "readXMLFeed1");
-		
 		xmlPullParser.require(XmlPullParser.START_TAG, namespace, "message");
-		
-		Log.i("XMLParser", "readXMLFeed2");
 		
 		while (xmlPullParser.next() != XmlPullParser.END_TAG) {
 			
@@ -94,8 +89,6 @@ public class XMLParser {
 					if(xmlPullParser.getEventType() != XmlPullParser.START_TAG) {
 						continue;
 					}
-				
-					Log.i("XMLParser", "readXMLFeed3");
 				
 					recallNo = xmlPullParser.getAttributeValue(namespace, "recallNo");
 					recallURL = xmlPullParser.getAttributeValue(namespace, "recallURL");

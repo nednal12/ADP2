@@ -1,0 +1,29 @@
+package com.bmarohnic.lib;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+public class RecallsDataSource {
+	
+	private static String LOGTAG = "RecallsDataSource";
+	SQLiteOpenHelper dbHelper;
+	SQLiteDatabase database;
+	
+	public RecallsDataSource(Context context) {
+		dbHelper = new RecallsDBHelper(context);
+	}
+	
+	public void openDB() {
+		database = dbHelper.getWritableDatabase();
+		Log.i(LOGTAG, "Database opened");
+	}
+	
+	public void closeDB() {
+		
+		dbHelper.close();
+		Log.i(LOGTAG, "Database closed");
+	}
+	
+}

@@ -1,0 +1,49 @@
+package com.bmarohnic.buysafe;
+
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.os.Bundle;
+import com.bmarohnic.lib.RecallsDataSource;
+
+// Activity instantiates the ListView fragment.
+public class WatchListActivity extends Activity {
+	RecallsDataSource recallsDataSource;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		setContentView(R.layout.activity_watchlist);
+		
+		recallsDataSource = new RecallsDataSource(this);
+		recallsDataSource.openDB();
+		
+		// Get an instance of the fragment manager in order to display the 
+		// ListView fragment.
+		FragmentManager fragmentManager = getFragmentManager();
+		Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentFrame);
+		
+		if(fragment == null) {
+			fragment = new WatchListFragment();
+			fragmentManager.beginTransaction().add(R.id.fragmentFrame, fragment).commit();
+		}
+
+	}
+	
+	// Establish or restore the connection to the database when the activity is viewed.
+	@Override
+	protected void onResume() {
+		super.onResume();
+		recallsDataSource.openDB();
+	}
+	
+	// Close the connection to the database when the activity is closed or placed on
+	// the backstack.
+	@Override
+	protected void onPause() {
+		super.onPause();
+		recallsDataSource.closeDB();
+	}
+}
+

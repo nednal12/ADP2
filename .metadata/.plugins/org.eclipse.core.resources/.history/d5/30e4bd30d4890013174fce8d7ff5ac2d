@@ -1,0 +1,17 @@
+package com.bmarohnic.lib;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class RecallsDataSource {
+	
+	SQLiteOpenHelper dbHelper;
+	SQLiteDatabase database;
+	
+	public RecallsDataSource(Context context) {
+		dbHelper = new RecallsDBHelper(context);
+		database = dbHelper.getWritableDatabase();
+	}
+	
+}

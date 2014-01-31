@@ -1,12 +1,9 @@
 package com.bmarohnic.buysafe;
 
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,47 +14,69 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bmarohnic.lib.Recall;
+import com.bmarohnic.lib.RecallsDataSource;
 import com.bmarohnic.lib.XMLParser.XMLTagData;
 
 public class DetailActivity extends Activity {
-
+			
+			
 	private static final int REQUEST_CODE = 100;
 	String manufacturer = null;
 	String type = null;
 	String recallURL = null;
+	String country_mfg = null;
 	String pieceMealURL = null;
-	List<XMLTagData> entries;
+	String hazard = null;
+	String prname = null;
+	String recallNo = null;
+	String recDate = null;
+	
+	HashSet<XMLTagData> entries;
 	Button btManufacturer;
 	Button btRecallURL;
 	Button btType;
 	TextView tvPrname;
-	private SharedPreferences spWatchList;
 	Intent intent;
+	RecallsDataSource recallsDataSource;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		spWatchList = getPreferences(MODE_PRIVATE);
-		
 		setContentView(R.layout.activity_detail);
 		
+		// Ensure that the connection to the database is established immediately.
+		recallsDataSource = new RecallsDataSource(this);
+		
+		// Get handles to each of the views
 		tvPrname = (TextView) findViewById(R.id.tvPrname);
 		btManufacturer = (Button) findViewById(R.id.btManufacturer);
 		btRecallURL = (Button) findViewById(R.id.btRecallURL);
 		btType = (Button) findViewById(R.id.btType);
 		
+		// Prepare to receive all of the incoming data from the calling activity.
 		intent = getIntent();
 		
+		// Not all of the data points listed below are used in this activity.
+		// However, future enhancements may require them to be.
 		manufacturer = intent.getStringExtra("manufacturer");
 		type = intent.getStringExtra("type");
 		recallURL = intent.getStringExtra("recallURL");
+		country_mfg = intent.getStringExtra("country_mfg");
+		hazard = intent.getStringExtra("hazard");
+		prname = intent.getStringExtra("prname");
+		recallNo = intent.getStringExtra("recallId");
+		recDate = intent.getStringExtra("recDate");
 		
-		
+		// Use the values passed in via the intent to set the text on the various views.
 		tvPrname.setText(intent.getStringExtra("prname"));
 		btManufacturer.setText(manufacturer);
 		btType.setText(type);
 		
+		
+		// Define the onClickListener for the Manufacturer button
+		// This will generate a new API string pertaining to that manufacturer.
+		// An intent will be started in order to display a list view of results provided by CPSC.gov
 		btManufacturer.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -79,8 +98,9 @@ public class DetailActivity extends Activity {
 			
 		});
 		
-		// Called when the product type button is selected.
-		// Passes the newly constructed API request string to the Extended Results Activity
+		// Define the onClickListener for the Product Type button
+		// This will generate a new API string pertaining to that specific product type.
+		// An intent will be started in order to display a list view of results provided by CPSC.gov
 		btType.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -102,20 +122,16 @@ public class DetailActivity extends Activity {
 			
 		});
 		
-		// Called when the CPSC.gov button is selected.
-		// Uses and implicit intent to open the webpage associated with the specific recall
+		// Define the onClickListener for the selected recall URL button
+		// Uses and implicit intent to open the web page associated with the specific recall
 		btRecallURL.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-		    	
 		    	Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(recallURL));
 				startActivity(intent);
-				
 			}
-			
 		});
-		
 	}
 
 	@Override
@@ -124,37 +140,55 @@ public class DetailActivity extends Activity {
         getMenuInflater().inflate(R.menu.activity_detail, menu);
         MenuItem addToWatchList = menu.findItem(R.id.addToWatchlist);
         
+     // Define the onMenuItemClickListener
         addToWatchList.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 			
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				
-				SharedPreferences.Editor spEditor = spWatchList.edit();
-				
-				String spRecallNo = intent.getStringExtra("recallNo");
-				String spPrname = intent.getStringExtra("prname");
-				String spRecDate = intent.getStringExtra("recDate");
-				String spType = intent.getStringExtra("type");
-				String spRecallURL = intent.getStringExtra("recallURL");
-				String spHazard = intent.getStringExtra("hazard");
-				String spManufaturer = intent.getStringExtra("manufacturer");
-				String spCountry_mfg = intent.getStringExtra("country_mfg");
-				
-				Set<String> stringSet = new HashSet<String>();
-				String[] recallDetailsArray = {spRecallNo,spPrname,spRecDate,spType,spRecallURL,spHazard,spManufaturer,spCountry_mfg};
-				
-				for (String string : recallDetailsArray) {
-					stringSet.add(string);
+				switch (item.getItemId()) {
+					case R.id.addToWatchlist:
+						recallsDataSource = new RecallsDataSource(DetailActivity.this);
+						recallsDataSource.openDB();
+						Recall recall = new Recall();
+						recall.setCountry_mfg(country_mfg);
+						recall.setHazard(hazard);
+						recall.setManufacturer(manufacturer);
+						recall.setPrname(prname);
+						recall.setRecallNo(recallNo);
+						recall.setRecallURL(recallURL);
+						recall.setRecDate(recDate);
+						recall.setType(type);
+						recallsDataSource.create(recall);
+						Toast.makeText(DetailActivity.this, "Recall added to watchlist", Toast.LENGTH_SHORT).show();
+						break;
+					
+					case R.id.launchHomeActivity:
+						intent = new Intent(DetailActivity.this, LandingPage.class);
+						startActivity(intent);
+						break;
+					
+					case R.id.launchWatchListActivity:
+						intent = new Intent(DetailActivity.this, WatchListActivity.class);
+						startActivity(intent);
+						break;
+						
+					default:
+					break;
 				}
-				spEditor.putStringSet(spRecallNo, stringSet);
-				spEditor.commit();
-				Toast.makeText(DetailActivity.this, "Recall added to watchlist", Toast.LENGTH_SHORT).show();
+				
 				return false;
 			}
 		});
         return true;
 	}
 	
+	
+	// onActivityResult is called upon completion of the triggered activity.
+	// Since DetailActivity is used for multiple reasons, the request code is verified 
+	// in order to ensure that the reason the activity is being viewed again is due to
+	// returning from the triggered activity. This prevents countless new activities from
+	// being created that would result in some very awkward navigation.
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -171,6 +205,18 @@ public class DetailActivity extends Activity {
 		}
 	}
 	
-	 
+	// Used to reconnect to the database if the app is paused and then resumed.
+	 @Override
+	protected void onResume() {
+		super.onResume();
+		
+		recallsDataSource.openDB();
+	}
+	// Used to close the connection to the database in the event the app is paused or closed.
+	 @Override
+	protected void onPause() {
+		super.onPause();
+		recallsDataSource.closeDB();
+	}
 }
  

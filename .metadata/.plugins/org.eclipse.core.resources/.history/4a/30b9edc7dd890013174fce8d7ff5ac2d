@@ -1,0 +1,46 @@
+package com.bmarohnic.lib;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+public class RecallsDataSource {
+	
+	private static String LOGTAG = "RecallsDataSource";
+	SQLiteOpenHelper dbHelper;
+	SQLiteDatabase database;
+	
+	public RecallsDataSource(Context context) {
+		dbHelper = new RecallsDBHelper(context);
+	}
+	
+	public void openDB() {
+		database = dbHelper.getWritableDatabase();
+		Log.i(LOGTAG, "Database opened");
+	}
+	
+	public void closeDB() {
+		dbHelper.close();
+		Log.i(LOGTAG, "Database closed");
+	}
+	
+	public Recall create(Recall recall) {
+		
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(RecallsDBHelper.RECALLNO, recall.getRecallNo());
+		contentValues.put(RecallsDBHelper.RECALLURL, recall.getRecallURL());
+		contentValues.put(RecallsDBHelper.RECDATE, recall.getRecDate());
+		contentValues.put(RecallsDBHelper.PRNAME, recall.getPrname());
+		contentValues.put(RecallsDBHelper.HAZARD, recall.getHazard());
+		contentValues.put(RecallsDBHelper.COUNTRY_MFG, recall.getCountry_mfg());
+		contentValues.put(RecallsDBHelper.MANUFACTURER, recall.getManufacturer());
+		contentValues.put(RecallsDBHelper.TYPE, recall.getType());
+		
+		long insertId = database.insert(RecallsDBHelper.RECALLS, null, contentValues);
+		
+		recall.setRecallId(insertId);
+		
+	}
+}

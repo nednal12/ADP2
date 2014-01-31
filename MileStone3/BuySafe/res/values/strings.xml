@@ -7,6 +7,7 @@
     <string name="landingpage_title">Recent Recalls</string>
     <string name="action_search_recalls">Search Recalls</string>
     <string name="action_watchlist">Add to Watchlist</string>
+    <string name="action_gotowatchlist">Watchlist</string>
     <string name="detailpage_title">Recall Details</string>
     <string name="action_recent_recalls">Recent Recalls</string>
     <string name="tvManufacturer">Manufacturer:</string>

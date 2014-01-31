@@ -16,10 +16,10 @@
         android:visible="true"/>
     
     <item
-        android:id="@+id/launchSubmitActivity"
+        android:id="@+id/launchWatchListActivity"
         android:orderInCategory="30"
         android:showAsAction="never"
-        android:title="@string/action_subit_recall"/>
+        android:title="@string/action_gotowatchlist"/>
     
     
 

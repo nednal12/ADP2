@@ -1,0 +1,33 @@
+package com.bmarohnic.buysafe;
+
+import java.util.Map;
+
+import android.app.ListFragment;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
+
+public class WatchListFragment extends ListFragment {
+
+	//Set<String> stringSet = new HashSet<String>();
+	SharedPreferences spWatchList;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		String[] recallDataArray = null;
+		spWatchList = getActivity().getSharedPreferences("recallData", 0);
+		Map<String, String[]> stringMap = (Map<String, String[]>) spWatchList.getAll();
+		for (Map.Entry<String, String[]> entry : stringMap.entrySet()) {
+			recallDataArray = entry.getValue();
+			for (int i = 0; i < recallDataArray.length; i++) {
+				Log.i(entry.getKey(), recallDataArray[i]);
+			}
+			
+		}
+		
+	}
+
+}

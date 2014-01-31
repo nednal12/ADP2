@@ -1,0 +1,26 @@
+package com.bmarohnic.buysafe;
+
+import java.util.Map;
+import java.util.Map.Entry;
+
+import android.app.ListFragment;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
+
+public class WatchListFragment extends ListFragment {
+
+	//Set<String> stringSet = new HashSet<String>();
+	
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		String[] recallDataArray = null;
+		getActivity().setTitle(R.string.action_gotowatchlist);
+		
+	}
+
+}
